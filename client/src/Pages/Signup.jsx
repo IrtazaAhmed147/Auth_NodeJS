@@ -1,6 +1,6 @@
 import React from 'react'
 import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import signupImage from "../assets/signupPoster.png"
@@ -79,8 +79,9 @@ const Signup = () => {
                         {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
 
 
-                        <input className='bg-green-500 px-3 py-1 text-xl rounded-sm text-white hover:bg-green-600 cursor-pointer duration-<0.5> ease-in-out transition-all' type="submit" value="create account" />
+                        <input className='bg-green-500 px-3 py-1 text-xl rounded-sm text-white hover:bg-green-600 cursor-pointer duration-<0.5> ease-in-out transition-all' type="submit" value="Create Account" />
                     </form>
+                    <p>already have an account? <span><Link to='/login'>Login</Link></span></p>
                 </div>
                 <div className='w-1/2 flex justify-center items-center'>
                     <img className='h-[400px]' src={signupImage} alt="" />
