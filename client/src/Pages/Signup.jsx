@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -6,14 +6,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import signupImage from "../assets/signupPoster.png"
 import signupSchema from '../validations/signupschema';
 import { signUp } from '../api/api';
+// import { AppContext } from '../ContextApi/ContextApi.jsx';
 
 
 
 
 const Signup = () => {
 
-
-
+    // const [isLoading, setIsLoading] = useState(false)
+    // const {isLoading, setIs} = useContext(AppContext)
 
     const { register, handleSubmit, formState: { errors }, } = useForm({
         resolver: zodResolver(signupSchema), // Connect Zod schema
@@ -34,16 +35,15 @@ const Signup = () => {
     }
 
     const handleForm = async (data) => {
-        console.log("Form Submitted:", data);
         const { confirmPassword, ...updatedData } = data
+
         const response = await signUp(updatedData)
-        console.log(response);
         if (response.status === "ok") {
-            notify()
+            // notify()
+            navigate("/login")
 
         }
 
-        // navigate("/login")
     };
 
 
