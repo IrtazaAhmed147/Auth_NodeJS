@@ -1,23 +1,23 @@
-import express from "express"
+import express, { urlencoded } from "express"
 import dotenv from "dotenv"
 import cors from "cors";
+import { authRouters } from "./routes/auth.routes.js";
 
 
 dotenv.config();
 
 const app = express()
 const port = process.env.PORT
-console.log(port);
 
 // it is middleware
 app.use(cors());
+app.use(express.json());
+app.use(urlencoded({ extended: true }))
 
-app.get("/api/signup", (req, res)=> {
-   return res.json({
-        status: "ok",
-        message: "it is working"
-    })
-})
-app.listen(port, ()=> {
+
+app.use(authRouters)
+
+
+app.listen(port, () => {
     console.log("server is running at " + port);
 })
