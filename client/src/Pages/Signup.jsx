@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react'
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import signupImage from "../assets/signupPoster.png"
 import signupSchema from '../validations/signupschema';
 import { signUp } from '../api/api';
-// import { AppContext } from '../ContextApi/ContextApi.jsx';
+import { AppContext } from '../ContextApi/ContextApi';
 
 
 
@@ -14,35 +14,34 @@ import { signUp } from '../api/api';
 const Signup = () => {
 
     // const [isLoading, setIsLoading] = useState(false)
-    // const {isLoading, setIs} = useContext(AppContext)
+    const {notify} = useContext(AppContext)
 
     const { register, handleSubmit, formState: { errors }, } = useForm({
         resolver: zodResolver(signupSchema), // Connect Zod schema
     });
 
     const navigate = useNavigate()
-    const notify = () => {
-        return toast.success('Account Created', {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
-    }
+  
 
     const handleForm = async (data) => {
         const { confirmPassword, ...updatedData } = data
 
-        const response = await signUp(updatedData)
-        if (response.status === "ok") {
-            // notify()
-            navigate("/login")
-
+        try {
+            
+            const response = await signUp(updatedData)
+            if (response.status === "ok") {
+                notify("success", response.message)
+                // navigate("/login")
+                
+            } else {
+                
+                notify("error", response.message)
+            }
+        } catch (error) {
+            console.log(error);
+            
         }
+        
 
     };
 

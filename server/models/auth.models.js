@@ -10,3 +10,7 @@ export const registerUser = async(userData)=> {
     return authCollection.insertOne(userData)
 }
 
+export const authentication = async(email)=> {
+    const response = await authCollection.findOne({email})
+    return response
+}

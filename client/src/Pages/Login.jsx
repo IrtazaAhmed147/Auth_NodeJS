@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import signupImage from "../assets/signupPoster.png"
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import loginSchema from '../validations/loginSchema'
-import { toast, ToastContainer } from 'react-toastify'
+import {  ToastContainer } from 'react-toastify'
 import { Link } from 'react-router-dom'
+import { loginUser } from '../api/api'
+import { AppContext } from '../ContextApi/ContextApi'
 
 const Login = () => {
 
@@ -12,18 +14,25 @@ const Login = () => {
     resolver: zodResolver(loginSchema)
   })
 
-  const handleForm = (data) => {
-    console.log(data);
-    toast.success('Login Successful', {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+   const {notify} = useContext(AppContext)
+
+ 
+
+  const handleForm = async(data) => {
+    try {
+      const response = await loginUser(data) 
+      if(response.status === "ok") {
+        notify("success", response.message)
+        
+      } else {
+        notify("error", response.message)
+      }
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+    
   }
 
   return (
@@ -68,7 +77,7 @@ const Login = () => {
         </div>
         <div className='w-1/2 hidden justify-center items-center sm:flex'>
           <img className='h-[350px] md:h-[400px]' src={signupImage} alt="" />
-        </div>  
+        </div>
       </div>
 
     </>
