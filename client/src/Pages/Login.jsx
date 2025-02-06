@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import loginSchema from '../validations/loginSchema'
 import {  ToastContainer } from 'react-toastify'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { loginUser } from '../api/api'
 import { AppContext } from '../ContextApi/ContextApi'
 
@@ -14,6 +14,7 @@ const Login = () => {
     resolver: zodResolver(loginSchema)
   })
 
+  const navigate = useNavigate()
    const {notify} = useContext(AppContext)
 
  
@@ -23,7 +24,9 @@ const Login = () => {
       const response = await loginUser(data) 
       if(response.status === "ok") {
         notify("success", response.message)
-        
+        console.log("token ==>>", response.token);
+        localStorage.setItem("token", JSON.stringify(response.token))
+        navigate("/")
       } else {
         notify("error", response.message)
       }

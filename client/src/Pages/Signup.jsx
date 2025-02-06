@@ -13,7 +13,6 @@ import { AppContext } from '../ContextApi/ContextApi';
 
 const Signup = () => {
 
-    // const [isLoading, setIsLoading] = useState(false)
     const {notify} = useContext(AppContext)
 
     const { register, handleSubmit, formState: { errors }, } = useForm({
@@ -31,7 +30,7 @@ const Signup = () => {
             const response = await signUp(updatedData)
             if (response.status === "ok") {
                 notify("success", response.message)
-                // navigate("/login")
+                navigate("/login")
                 
             } else {
                 
